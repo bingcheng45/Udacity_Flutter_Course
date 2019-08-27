@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 
 import 'category.dart';
+import 'unit.dart';
 // TODO: Check if we need to import anything
 
 // TODO: Define any constants
@@ -42,11 +43,25 @@ class CategoryRoute extends StatelessWidget {
     Colors.red,
   ];
 
+  /// Makes the correct number of rows for the list view.
+  ///
+  /// For portrait, we use a [ListView].
   Widget _buildCategoryWidgets(List<Widget> categories) {
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) => categories[index],
       itemCount: categories.length,
     );
+  }
+
+  /// Returns a list of mock [Unit]s.
+  List<Unit> _retrieveUnitList(String categoryName) {
+    return List.generate(10, (int i) {
+      i += 1;
+      return Unit(
+        name: '$categoryName Unit $i',
+        conversion: i.toDouble(),
+      );
+    });
   }
 
   @override
@@ -58,29 +73,27 @@ class CategoryRoute extends StatelessWidget {
         name: _categoryNames[i],
         color: _baseColors[i],
         iconLocation: Icons.cake,
+        units: _retrieveUnitList(_categoryNames[i]),
       ));
     }
-    // TODO: Create a list of the eight Categories, using the names and colors
-    // from above. Use a placeholder icon, such as `Icons.cake` for each
-    // Category. We'll add custom icons later.
 
-    // TODO: Create a list view of the Categories
     final listView = Container(
       color: _backgroundColor,
-      padding: EdgeInsets.all(8.0),
+      padding: EdgeInsets.symmetric(horizontal: 8.0),
       child: _buildCategoryWidgets(categories),
     );
 
-    // TODO: Create an App Bar
     final appBar = AppBar(
-      backgroundColor: Colors.green[100],
-      title: Center(
-        child: Text(
-          'Unit Converter',
-          style: TextStyle(fontSize: 30, color: Colors.black),
+      elevation: 0.0,
+      title: Text(
+        'Unit Converter',
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 30.0,
         ),
       ),
-      elevation: 0.0,
+      centerTitle: true,
+      backgroundColor: _backgroundColor,
     );
 
     return Scaffold(
